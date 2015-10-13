@@ -1,0 +1,87 @@
+[app:war_peace]
+use = egg:war_peace
+ramses.raml_schema = api.raml
+
+nefertari.engine = nefertari_mongodb
+
+auth = false
+auth_tkt_secret = verysecret
+enable_get_tunneling = true
+public_max_limit = 100
+database_acls = false
+
+system.user = system
+system.password = 123456
+system.email = user@domain.com
+
+# MongoDB settings
+mongodb.host = localhost
+mongodb.port = 27017
+mongodb.db = war_peace
+
+# ElasticSearch
+elasticsearch.hosts = localhost:9200
+elasticsearch.sniff = false
+elasticsearch.index_name = war_peace
+elasticsearch.index.disable = false
+elasticsearch.enable_refresh_query = true
+elasticsearch.enable_aggregations = true
+elasticsearch.enable_polymorphic_query = true
+
+# war_peace
+host = localhost
+base_url = http://%(host)s
+
+# CORS
+cors.enable = false
+cors.allow_origins = %(base_url)s
+cors.allow_credentials = true
+
+request_timing.enable = false
+
+[composite:main]
+use = egg:Paste#urlmap
+/api/ = war_peace
+
+[server:main]
+use = egg:waitress#main
+host = 0.0.0.0
+port = 6543
+threads = 3
+
+[loggers]
+keys = root, war_peace, nefertari, ramses
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = INFO
+handlers = console
+
+[logger_war_peace]
+level = INFO
+handlers =
+qualname = war_peace
+
+[logger_nefertari]
+level = DEBUG
+handlers =
+qualname = nefertari
+
+[logger_ramses]
+level = DEBUG
+handlers =
+qualname = ramses
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(asctime)s %(levelname)-5.5s [%(name)s][%(threadName)s] %(module)s.%(funcName)s: %(message)s
