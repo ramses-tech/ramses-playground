@@ -1,9 +1,10 @@
 # `ramses-playground`
 
-- example projects using ramses 
-- E.g. Basic API with "fun" data model, API with geodata, API hooked to other APIs
+- example projects using ramses, e.g. 
+  - Basic API with "fun" data model
+  - API with geodata
+  - API hooked to other APIs
 
-## Adding a new project
-- you can add new project by creating a folder in this repository
+## Adding a new project to this repository
+- create a new ramses-playground/<name_of_your_project> folder
 - peg versions in your requirements.txt
-- pull-requests are welcomed!
