@@ -2,9 +2,9 @@ from setuptools import setup, find_packages
 
 requires = ['pyramid']
 
-setup(name='war_peace',
+setup(name='images_exif',
       version='0.0.1',
-      description='war_peace',
+      description='images_exif',
       long_description='',
       classifiers=[
           "Programming Language :: Python",
@@ -25,8 +25,8 @@ setup(name='war_peace',
       zip_safe=False,
       install_requires=requires,
       tests_require=requires,
-      test_suite="war_peace",
+      test_suite="images_exif",
       entry_points="""\
       [paste.app_factory]
-          main = war_peace:main
+          main = images_exif:main
       """)

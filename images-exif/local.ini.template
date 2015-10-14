@@ -1,5 +1,5 @@
-[app:war_peace]
-use = egg:war_peace
+[app:images_exif]
+use = egg:images_exif
 ramses.raml_schema = api.raml
 
 nefertari.engine = nefertari_mongodb
@@ -17,18 +17,18 @@ system.email = user@domain.com
 # MongoDB settings
 mongodb.host = localhost
 mongodb.port = 27017
-mongodb.db = war_peace
+mongodb.db = images_exif
 
 # ElasticSearch
 elasticsearch.hosts = localhost:9200
 elasticsearch.sniff = false
-elasticsearch.index_name = war_peace
+elasticsearch.index_name = images_exif
 elasticsearch.index.disable = false
 elasticsearch.enable_refresh_query = true
 elasticsearch.enable_aggregations = true
 elasticsearch.enable_polymorphic_query = true
 
-# war_peace
+# images_exif
 host = localhost
 base_url = http://%(host)s
 
@@ -41,7 +41,7 @@ request_timing.enable = false
 
 [composite:main]
 use = egg:Paste#urlmap
-/api/ = war_peace
+/api/ = images_exif
 
 [server:main]
 use = egg:waitress#main
@@ -50,7 +50,7 @@ port = 6543
 threads = 3
 
 [loggers]
-keys = root, war_peace, nefertari, ramses
+keys = root, images_exif, nefertari, ramses
 
 [handlers]
 keys = console
@@ -62,10 +62,10 @@ keys = generic
 level = INFO
 handlers = console
 
-[logger_war_peace]
+[logger_images_exif]
 level = INFO
 handlers =
-qualname = war_peace
+qualname = images_exif
 
 [logger_nefertari]
 level = DEBUG
