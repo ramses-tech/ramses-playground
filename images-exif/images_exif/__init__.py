@@ -1,3 +1,7 @@
+from StringIO import StringIO
+
+import exifread
+import requests
 from pyramid.config import Configurator
 from ramses import registry
 
@@ -25,7 +29,14 @@ def readonly_url(event):
 
 @registry.add
 def fill_exif(event):
-    return
+    # Test image: http://bit.ly/1VTFA5W
+    url = event.fields['url'].new_value
+    response = requests.get(url)
+    image_file = StringIO(response.content)
+    raw_exif = exifread.process_file(image_file, details=False)
+    exclude = ('Thumbnail', 'Interoperability', 'MakerNote')
+    exif = {key: val.values for key, val in raw_exif.items()
+            if key.split()[0] not in exclude}
 
 
 def main(global_config, **settings):
