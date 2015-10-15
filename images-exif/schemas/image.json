@@ -4,7 +4,7 @@
     "$schema": "http://json-schema.org/draft-04/schema",
     "required": ["url"],
     "_event_handlers": {
-        "before_create": ["validate_url_present", "populate_name", "fill_exif"],
+        "before_create": ["validate_url_present", "populate_name", "populate_exif"],
         "before_set": ["readonly_url"]
     },
     "properties": {
@@ -44,16 +44,10 @@
                 "type": "dict"
             }
         },
-        "latitude": {
-            "type": ["number", "null"],
+        "location": {
+            "type": ["object", "null"],
             "_db_settings": {
-                "type": "float"
-            }
-        },
-        "longitude": {
-            "type": ["number", "null"],
-            "_db_settings": {
-                "type": "float"
+                "type": "dict"
             }
         }
     }

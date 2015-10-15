@@ -28,7 +28,7 @@ def readonly_url(event):
 
 
 @registry.add
-def fill_exif(event):
+def populate_exif(event):
     # Test image: http://bit.ly/1VTFA5W
     url = event.fields['url'].new_value
     response = requests.get(url)
@@ -37,18 +37,16 @@ def fill_exif(event):
 
     # EXIF data
     exclude = ('Thumbnail', 'Interoperability', 'MakerNote', 'GPS')
-    exif = {key.replace(' ', ''): val.printable
-            for key, val in raw_exif.items()
-            if key.split()[0] not in exclude}
-    event.set_field_value('exif', exif)
+    exif_data = {key: val.printable for key, val in raw_exif.items()
+                 if key.split()[0] not in exclude}
+    event.set_field_value('exif', exif_data)
 
     # GPS data
-    geo = {key.split()[-1]: val.values
-           for key, val in raw_exif.items()
-           if key.startswith('GPS')}
-    lat, lon = get_lat_lon(geo)
-    event.set_field_value('latitude', lat)
-    event.set_field_value('longitude', lon)
+    gps_data = {key.split()[-1]: val.values
+                for key, val in raw_exif.items()
+                if key.startswith('GPS')}
+    lat, lon = get_lat_lon(gps_data)
+    event.set_field_value('location', {'lat': lat, 'lon': lon})
 
 
 # Customized versions of https://gist.github.com/erans/983821
@@ -77,11 +75,11 @@ def get_lat_lon(geo_data):
 
         if gps_lat and gps_lat_ref and gps_lon and gps_lon_ref:
             lat = _to_degrees(gps_lat)
-            if gps_lat_ref != 'N':
+            if gps_lat_ref.upper() != 'N':
                 lat = 0 - lat
 
             lon = _to_degrees(gps_lon)
-            if gps_lon_ref != 'E':
+            if gps_lon_ref.upper() != 'E':
                 lon = 0 - lon
     except (KeyError, IndexError):
         pass
