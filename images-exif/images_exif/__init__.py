@@ -34,9 +34,59 @@ def fill_exif(event):
     response = requests.get(url)
     image_file = StringIO(response.content)
     raw_exif = exifread.process_file(image_file, details=False)
-    exclude = ('Thumbnail', 'Interoperability', 'MakerNote')
-    exif = {key: val.values for key, val in raw_exif.items()
+
+    # EXIF data
+    exclude = ('Thumbnail', 'Interoperability', 'MakerNote', 'GPS')
+    exif = {key.replace(' ', ''): val.printable
+            for key, val in raw_exif.items()
             if key.split()[0] not in exclude}
+    event.set_field_value('exif', exif)
+
+    # GPS data
+    geo = {key.split()[-1]: val.values
+           for key, val in raw_exif.items()
+           if key.startswith('GPS')}
+    lat, lon = get_lat_lon(geo)
+    event.set_field_value('latitude', lat)
+    event.set_field_value('longitude', lon)
+
+
+# Customized versions of https://gist.github.com/erans/983821
+def _to_degrees(value):
+    deg = value[0]
+    deg = float(deg.num) / float(deg.den)
+
+    minute = value[1]
+    minute = float(minute.num) / float(minute.den)
+
+    sec = value[2]
+    sec = float(sec.num) / float(sec.den)
+
+    return deg + (minute / 60.0) + (sec / 3600.0)
+
+
+def get_lat_lon(geo_data):
+    lat = None
+    lon = None
+
+    try:
+        gps_lat = geo_data['GPSLatitude']
+        gps_lat_ref = geo_data['GPSLatitudeRef']
+        gps_lon = geo_data['GPSLongitude']
+        gps_lon_ref = geo_data['GPSLongitudeRef']
+
+        if gps_lat and gps_lat_ref and gps_lon and gps_lon_ref:
+            lat = _to_degrees(gps_lat)
+            if gps_lat_ref != 'N':
+                lat = 0 - lat
+
+            lon = _to_degrees(gps_lon)
+            if gps_lon_ref != 'E':
+                lon = 0 - lon
+    except (KeyError, IndexError):
+        pass
+
+    return lat, lon
 
 
 def main(global_config, **settings):

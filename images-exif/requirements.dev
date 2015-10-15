@@ -2,7 +2,7 @@ Paste==2.0.2
 pyramid==1.5.7
 waitress==0.8.9
 requests
-exifread
+exifread==2.1.2
 
 -e ../../nefertari
 -e ../../nefertari-mongodb

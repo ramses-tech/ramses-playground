@@ -43,6 +43,18 @@
             "_db_settings": {
                 "type": "dict"
             }
+        },
+        "latitude": {
+            "type": ["number", "null"],
+            "_db_settings": {
+                "type": "float"
+            }
+        },
+        "longitude": {
+            "type": ["number", "null"],
+            "_db_settings": {
+                "type": "float"
+            }
         }
     }
 }
