@@ -25,17 +25,19 @@
           center: {lat: 0, lng: 0}
         });
 
-        $.get('http://localhost:6543/api/images?_limit=100', function(data){
+        $.get('http://localhost:6543/api/images' + location.search, function(data){
           var images = data.data;
           $.each(images, function(ind, img){
             if (img.location.lat !== null & img.location.lon !== null) {
+              var created_at = new Date(img.created_at).toGMTString()
               var marker = new google.maps.Marker({
                 position: {lat: img.location.lat, lng: img.location.lon},
                 map: map,
-                title: img.name
+                title: img.name + ' ('+ created_at + ')'
               });
-              var imageBlock = '<img src="' + img.url +
-                '" style="max-width:200px;max-height:200px">'
+              var imageBlock = '<a href="' + img.url + '" target="_blank">' +
+                '<img src="' + img.url +
+                '" style="max-width:200px;max-height:200px"></a>'
               var infowindow = new google.maps.InfoWindow({
                 content: imageBlock
               });
@@ -48,7 +50,7 @@
       }
     </script>
     <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAm3dI6ULyOspJBuagjWRU2l1lwGDiqN20&signed_in=true&callback=initMap"></script>
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&signed_in=true&callback=initMap"></script>
   </body>
 </html>
 

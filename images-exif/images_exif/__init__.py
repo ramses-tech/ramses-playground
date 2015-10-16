@@ -8,12 +8,14 @@ from ramses import registry
 
 @registry.add
 def validate_url_present(event):
+    """ Check "url" param is present. """
     if 'url' not in event.fields or not event.fields['url'].new_value:
         raise KeyError('Missing required field: "url"')
 
 
 @registry.add
 def populate_name(event):
+    """ Populate image name if not provided. """
     if 'name' not in event.fields:
         url = event.fields['url'].new_value
         full_name = url.strip().split('/')[-1]
@@ -23,13 +25,20 @@ def populate_name(event):
 
 @registry.add
 def readonly_url(event):
+    """ Disable image "url" update requests. """
     if event.view.request.action != 'create' and 'url' in event.fields:
         raise Exception('Field "url" can not be changed')
 
 
 @registry.add
 def populate_exif(event):
-    # Test image: http://bit.ly/1VTFA5W
+    """ Populate EXIF data and location(if not present).
+
+    Not all EXIF data is stored. GPS coordinates are converted
+    to floats.
+
+    Test image with GPS data: http://bit.ly/1VTFA5W
+    """
     url = event.fields['url'].new_value
     response = requests.get(url)
     image_file = StringIO(response.content)
@@ -40,13 +49,15 @@ def populate_exif(event):
     exif_data = {key: val.printable for key, val in raw_exif.items()
                  if key.split()[0] not in exclude}
     event.set_field_value('exif', exif_data)
-    # GPS data
-    gps_data = {key.split()[-1]: val.values
-                for key, val in raw_exif.items()
-                if key.startswith('GPS')}
 
-    lat, lon = get_lat_lon(gps_data)
-    event.set_field_value('location', {'lat': lat, 'lon': lon})
+    # GPS data
+    loc_field = event.fields.get('location')
+    if not loc_field or not loc_field.new_value:
+        gps_data = {key.split()[-1]: val.values
+                    for key, val in raw_exif.items()
+                    if key.startswith('GPS')}
+        lat, lon = get_lat_lon(gps_data)
+        event.set_field_value('location', {'lat': lat, 'lon': lon})
 
 
 # Customized versions of https://gist.github.com/erans/983821
