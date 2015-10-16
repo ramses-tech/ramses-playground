@@ -21,12 +21,12 @@ $ pserve local.ini
 $ nefertari.post2api -f ./mock/Images.json -u http://localhost:6543/api/images
 ```
 
-This will load about 20 small pictures or Ramses with GPS tags around the world.
+This will load about 20 small pictures of Ramses with GPS metadata from around the world.
 
 
 ## Usage
 
-Project presents a API endpoints ``/api/images`` and ``/api/iamges/{id}``.
+Project presents following API endpoints ``/api/images`` and ``/api/iamges/{id}``.
 
 Create new image:
 POST ``/api/images``. Fields: url, name(optional), location(optional).
