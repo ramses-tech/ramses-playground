@@ -27,8 +27,6 @@ setup(name='images_exif',
       tests_require=requires,
       test_suite="images_exif",
       entry_points="""\
-      [console_scripts]
-          images.mockdata = images_exif.mockdata:main
       [paste.app_factory]
           main = images_exif:main
       """)
