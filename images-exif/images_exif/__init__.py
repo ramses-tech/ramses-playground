@@ -40,11 +40,11 @@ def populate_exif(event):
     exif_data = {key: val.printable for key, val in raw_exif.items()
                  if key.split()[0] not in exclude}
     event.set_field_value('exif', exif_data)
-
     # GPS data
     gps_data = {key.split()[-1]: val.values
                 for key, val in raw_exif.items()
                 if key.startswith('GPS')}
+
     lat, lon = get_lat_lon(gps_data)
     event.set_field_value('location', {'lat': lat, 'lon': lon})
 
@@ -69,9 +69,9 @@ def get_lat_lon(geo_data):
 
     try:
         gps_lat = geo_data['GPSLatitude']
-        gps_lat_ref = geo_data['GPSLatitudeRef']
+        gps_lat_ref = geo_data.get('GPSLatitudeRef', 'N')
         gps_lon = geo_data['GPSLongitude']
-        gps_lon_ref = geo_data['GPSLongitudeRef']
+        gps_lon_ref = geo_data.get('GPSLongitudeRef', 'E')
 
         if gps_lat and gps_lat_ref and gps_lon and gps_lon_ref:
             lat = _to_degrees(gps_lat)
