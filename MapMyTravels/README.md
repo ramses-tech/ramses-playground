@@ -43,9 +43,7 @@ Images objects can also be updated(PATCH, PUT) and deleted(DELETE). Field "url" 
 
 ## Web usage example
 
-To see simple API usage example:
-1. Open ``index.html`` in editor and replace ``YOUR_API_KEY`` with your Google Maps API key.
-2. Open ``index.html`` in browser.
+To see simple API usage example open ``index.html`` in browser.
 
 Images that have ``location`` field populated will be displayed as markers on the map. Markers show thumbnail of image on click. Thumbnail is a link that leads to original image.
 To see image name and creation date/time, hover over the marker.

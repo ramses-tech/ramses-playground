@@ -1,5 +1,5 @@
-[app:images_exif]
-use = egg:images_exif
+[app:map_my_travels]
+use = egg:map_my_travels
 ramses.raml_schema = api.raml
 
 nefertari.engine = nefertari_mongodb
@@ -17,18 +17,18 @@ system.email = user@domain.com
 # MongoDB settings
 mongodb.host = localhost
 mongodb.port = 27017
-mongodb.db = images_exif
+mongodb.db = map_my_travels
 
 # ElasticSearch
 elasticsearch.hosts = localhost:9200
 elasticsearch.sniff = false
-elasticsearch.index_name = images_exif
+elasticsearch.index_name = map_my_travels
 elasticsearch.index.disable = false
 elasticsearch.enable_refresh_query = true
 elasticsearch.enable_aggregations = true
 elasticsearch.enable_polymorphic_query = true
 
-# images_exif
+# map_my_travels
 host = localhost
 base_url = http://%(host)s
 
@@ -41,7 +41,7 @@ request_timing.enable = false
 
 [composite:main]
 use = egg:Paste#urlmap
-/api/ = images_exif
+/api/ = map_my_travels
 
 [server:main]
 use = egg:waitress#main
@@ -50,7 +50,7 @@ port = 6543
 threads = 3
 
 [loggers]
-keys = root, images_exif, nefertari, ramses
+keys = root, map_my_travels, nefertari, ramses
 
 [handlers]
 keys = console
@@ -62,10 +62,10 @@ keys = generic
 level = INFO
 handlers = console
 
-[logger_images_exif]
+[logger_map_my_travels]
 level = INFO
 handlers =
-qualname = images_exif
+qualname = map_my_travels
 
 [logger_nefertari]
 level = DEBUG

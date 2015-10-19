@@ -2,9 +2,9 @@ from setuptools import setup, find_packages
 
 requires = ['pyramid']
 
-setup(name='images_exif',
+setup(name='map_my_travels',
       version='0.0.1',
-      description='images_exif',
+      description='map_my_travels',
       long_description='',
       classifiers=[
           "Programming Language :: Python",
@@ -25,8 +25,8 @@ setup(name='images_exif',
       zip_safe=False,
       install_requires=requires,
       tests_require=requires,
-      test_suite="images_exif",
+      test_suite="map_my_travels",
       entry_points="""\
       [paste.app_factory]
-          main = images_exif:main
+          main = map_my_travels:main
       """)
