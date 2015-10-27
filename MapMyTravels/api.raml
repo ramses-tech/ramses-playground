@@ -1,0 +1,44 @@
+#%RAML 0.8
+---
+title: Images EXIF REST API
+documentation:
+    - title: Home
+      content: |
+        Welcome to the Images EXIF API.
+baseUri: http://{host}:{port}/{version}
+version: v1
+mediaType: application/json
+protocols: [HTTP, HTTPS]
+
+
+/images:
+    displayName: All images
+    get:
+        description: Get all images
+    post:
+        description: Create a new image
+        body:
+            application/json:
+                schema: !include schemas/image.json
+    patch:
+        description: Update multiple images
+    delete:
+        description: Delete multiple images
+    head:
+        description: Determine whether a given resource is available
+    options:
+        description: Retrieve the available HTTP verbs for a given resource
+
+    /{id}:
+        displayName: One image
+        get:
+            description: Get a particular image
+        delete:
+            description: Delete a particular image
+        patch:
+        put:
+            description: Update a particular image
+        head:
+            description: Determine whether a given resource is available
+        options:
+            description: Retrieve the available HTTP verbs for a given resource

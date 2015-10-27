@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Images</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script>
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 3,
+          center: {lat: 0, lng: 0}
+        });
+
+        $.get('http://localhost:6543/api/images' + location.search, function(data){
+          var images = data.data;
+          $.each(images, function(ind, img){
+            if (img.location.lat !== null & img.location.lon !== null) {
+              var created_at = new Date(img.created_at).toGMTString()
+              var marker = new google.maps.Marker({
+                position: {lat: img.location.lat, lng: img.location.lon},
+                map: map,
+                title: img.name + ' ('+ created_at + ')'
+              });
+              var imageBlock = '<a href="' + img.url + '" target="_blank">' +
+                '<img src="' + img.url +
+                '" style="max-width:200px;max-height:200px"></a>'
+              var infowindow = new google.maps.InfoWindow({
+                content: imageBlock
+              });
+              marker.addListener('click', function() {
+                infowindow.open(map, marker);
+              });
+            }
+          });
+        });
+      }
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?signed_in=true&callback=initMap"></script>
+  </body>
+</html>
+

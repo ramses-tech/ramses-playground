@@ -1,0 +1,54 @@
+{
+    "type": "object",
+    "title": "Image schema",
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "required": ["url"],
+    "_event_handlers": {
+        "before_create": ["validate_url_present", "populate_name", "populate_exif"],
+        "before_set": ["readonly_url"]
+    },
+    "properties": {
+        "id": {
+            "type": ["integer", "string"],
+            "_db_settings": {
+                "type": "id_field",
+                "primary_key": true
+            }
+        },
+        "created_at": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "_db_settings": {
+                "type": "datetime",
+                "default": "{{datetime.datetime.utcnow}}"
+            }
+        },
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "_db_settings": {
+                "type": "string",
+                "min_length": 1
+            }
+        },
+        "url": {
+            "type": "string",
+            "_db_settings": {
+                "type": "string",
+                "required": true
+            }
+        },
+        "exif": {
+            "type": ["object", "null"],
+            "_db_settings": {
+                "type": "dict"
+            }
+        },
+        "location": {
+            "type": ["object", "null"],
+            "_db_settings": {
+                "type": "dict"
+            }
+        }
+    }
+}

@@ -1,0 +1,87 @@
+[app:map_my_travels]
+use = egg:map_my_travels
+ramses.raml_schema = api.raml
+
+nefertari.engine = nefertari_mongodb
+
+auth = false
+auth_tkt_secret = verysecret
+enable_get_tunneling = true
+public_max_limit = 100
+database_acls = false
+
+system.user = system
+system.password = 123456
+system.email = user@domain.com
+
+# MongoDB settings
+mongodb.host = localhost
+mongodb.port = 27017
+mongodb.db = map_my_travels
+
+# ElasticSearch
+elasticsearch.hosts = localhost:9200
+elasticsearch.sniff = false
+elasticsearch.index_name = map_my_travels
+elasticsearch.index.disable = false
+elasticsearch.enable_refresh_query = true
+elasticsearch.enable_aggregations = true
+elasticsearch.enable_polymorphic_query = true
+
+# map_my_travels
+host = localhost
+base_url = http://%(host)s
+
+# CORS
+cors.enable = true
+cors.allow_origins = *
+cors.allow_credentials = false
+
+request_timing.enable = false
+
+[composite:main]
+use = egg:Paste#urlmap
+/api/ = map_my_travels
+
+[server:main]
+use = egg:waitress#main
+host = 0.0.0.0
+port = 6543
+threads = 3
+
+[loggers]
+keys = root, map_my_travels, nefertari, ramses
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = INFO
+handlers = console
+
+[logger_map_my_travels]
+level = INFO
+handlers =
+qualname = map_my_travels
+
+[logger_nefertari]
+level = DEBUG
+handlers =
+qualname = nefertari
+
+[logger_ramses]
+level = DEBUG
+handlers =
+qualname = ramses
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(asctime)s %(levelname)-5.5s [%(name)s][%(threadName)s] %(module)s.%(funcName)s: %(message)s
