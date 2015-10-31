@@ -1,0 +1,22 @@
+#%RAML 0.8
+---
+title: bleepr API
+baseUri: http://localhost:6543/api
+version: 0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1
+
+/bleeps:
+    get:
+        description: Get all bleeps
+    post:
+        description: Create a new bleep
+        body:
+            application/json:
+                schema: !include bleeps.json
+
+    /{id}:
+        get:
+            description: Get a particular bleep
+        delete:
+            description: Delete a particular bleep
+        patch:
+            description: Update a particular bleep
