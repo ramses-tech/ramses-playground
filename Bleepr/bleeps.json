@@ -1,0 +1,41 @@
+{
+    "type": "object",
+    "title": "Bleeps schema",
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "_event_handlers": {
+        "after_create": ["send_tha_bill"]
+    },
+    "properties": {
+        "id": {
+            "type": ["integer", "null"],
+            "_db_settings": {
+                "type": "id_field",
+                "primary_key": true
+            }
+        },
+        "created_at": {
+            "type": "date-time",
+            "_db_settings": {
+                "type": "datetime",
+            }
+        },
+        "author": {
+            "type": "string",
+            "_db_settings": {
+                "type": "string",
+            }
+        },
+        "text": {
+            "type": "string",
+            "_db_settings": {
+                "type": "text"
+            }
+        },
+        "tweet_url": {
+            "type": "string",
+            "_db_settings": {
+                "type": "string",
+            }
+        }
+    }
+}

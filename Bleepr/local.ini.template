@@ -1,0 +1,57 @@
+[twitter]
+# create a twitter app here: https://apps.twitter.com/app/new
+# to get your consumer_key, consumer_secret, access_token and access_token_secret
+track_terms = disrupt, restful, big data, deep learning, in the cloud, cloud computing
+consumer_key =
+consumer_secret =
+access_token =
+access_token_secret =
+bleep_hook_url = http://localhost:6543/api/bleeps
+
+[paypal]
+# get your paypal.me link here: https://www.paypal.com/paypalme/my
+link = paypal.me/YOUR_ID_HERE
+fine = 1
+
+[app:bleepr]
+use = egg:bleepr
+host = localhost
+base_url = http://%(host)s:6543
+ramses.raml_schema = api.raml
+nefertari.engine = nefertari_sqla
+sqlalchemy.url = postgresql://localhost:5432/bleepr
+elasticsearch.hosts = localhost:9200
+elasticsearch.index_name = bleepr
+elasticsearch.enable_aggregations = true
+
+[composite:main]
+use = egg:Paste#urlmap
+/api/ = bleepr
+
+[server:main]
+use = egg:waitress#main
+host = localhost
+port = 6543
+threads = 3
+
+[loggers]
+keys = root
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = INFO
+handlers = console
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(asctime)s %(levelname)-5.5s [%(name)s][%(threadName)s] %(module)s.%(funcName)s: %(message)s

@@ -1,0 +1,8 @@
+nefertari==0.6.0
+Paste==2.0.2
+pyramid==1.5.7
+ramses==0.5.0
+twython==3.3.0
+waitress==0.8.9
+
+-e .
